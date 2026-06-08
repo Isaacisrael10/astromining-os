@@ -4,9 +4,9 @@ Interface visual (HTML + CSS) do sistema integrado de mineração de asteroides.
 Esta é a **face do sistema**: o painel de controle que o operador da missão usa, na
 Terra, para ler a telemetria da sonda e decidir o próximo passo da operação.
 
-> **Escopo desta entrega (FED):** apenas **estrutura (HTML)** e **estilo (CSS)**.
-> Não há JavaScript — a interatividade será adicionada na disciplina de Web Development
-> (WD), neste mesmo repositório.
+> **Front-End Design (FED):** estrutura (HTML) e estilo (CSS).
+> **Web Development (WD):** a interatividade em JavaScript já foi adicionada (pasta `js/`).
+> Veja o **Manual de Interatividade** no final deste documento.
 
 ---
 
@@ -123,7 +123,14 @@ Por ser um site estático (apenas HTML e CSS), **não requer instalação**:
 ├── minerios.html
 ├── sistemas.html
 ├── css/
-│   └── style.css       # tokens + componentes reutilizáveis
+│   ├── style.css         # FED: tokens + componentes reutilizáveis
+│   └── interactive.css   # WD: estados visuais controlados via JavaScript
+├── js/                   # WD: scripts de interatividade
+│   ├── ui.js             # notificações, atraso de comunicação, relógio (compartilhado)
+│   ├── dashboard.js      # simulação da perfuração + telemetria + contagem
+│   ├── asteroides.js     # seleção de alvo atualiza o painel de detalhe
+│   ├── minerios.js       # ordenar e filtrar a tabela
+│   └── sistemas.js       # telemetria, simulação de falha e log
 └── assets/                       # moodboard e referências visuais
     ├── AstroMining-Moodboard.pdf  # moodboard completo (direção visual, análise crítica e anatomia das telas)
     └── references/                # imagens de inspiração (NASA, glass cockpit)
@@ -138,3 +145,53 @@ Ver arquivo [`integrantes.txt`](integrantes.txt).
 - Matheus Henrique — RM 571197
 - Isaac Israel — RM 570072
 - Heitor Anacleto — RM 573599
+
+---
+
+## 9. Manual de Interatividade (Web Development)
+
+Passo a passo do que clicar e o que acontece na tela. O JavaScript fica na pasta `js/` e
+**simula o sistema espacial funcionando**.
+
+> **Como abrir:** abra `index.html` no navegador (duplo clique) e use a barra lateral para
+> navegar entre as telas. As notificações aparecem no **canto superior direito**.
+
+### 🛰️ Dashboard (`index.html`)
+- **Relógio da missão** (barra lateral): atualiza sozinho a cada segundo.
+- **Janela de Sinal** (topo): contagem regressiva rodando em tempo real.
+- **Botão “Iniciar Perfuração”** (rodapé) — clique para iniciar a simulação e veja na tela:
+  - a **Carga Mineral sobe** e o **Combustível** e a **Energia descem** a cada segundo;
+  - a **Broca** oscila e, ao passar do limite, o cartão fica **dourado** e depois **vermelho**;
+  - a **Recomendação** muda de “Perfuração nominal” (verde) para “Pausar perfuração” ou
+    “Retornar à base” (vermelho, piscando), conforme o risco;
+  - os **alertas** à direita mudam de **seguro → atenção → perigo**;
+  - o botão vira **“Pausar Perfuração”** — clique de novo para parar;
+  - se a carga encher ou o combustível acabar, a perfuração **para sozinha** com um aviso.
+- **Telemetria de sinal:** os valores de “Sinal” (mapa) e “Comunicação” mudam sozinhos a cada 3s.
+- **Qualquer outro botão** (Missão, Distância, Ver combustível, pinos do mapa, etc.): simula um
+  **comando com atraso de comunicação** — mostra “aguardando resposta da sonda...” e, após
+  1–2s, a confirmação.
+
+### ☄️ Asteroides (`asteroides.html`)
+- **Clique em qualquer card de asteroide** (Psyche 16, Bennu, Ryugu, Apophis): o card fica
+  **destacado** e o painel **“Alvo Selecionado”** (à direita) atualiza o nome, o status e os
+  percentuais de Platina / Ferro / Níquel / Viabilidade daquele alvo.
+
+### ⛏️ Minérios (`minerios.html`)
+- **Campo de filtro** (acima da tabela): digite um nome (ex.: “platina”) e a tabela
+  **filtra as linhas** em tempo real.
+- **Botão “Ordenar por valor”**: reordena a tabela por valor, alternando crescente/decrescente.
+- **Botão “Detalhes”** de uma linha: destaca a linha e simula a consulta (com atraso).
+
+### 🔧 Sistemas (`sistemas.html`)
+- **Telemetria:** o valor de “Energia” oscila sozinho a cada poucos segundos.
+- **Botão “Simular falha de subsistema”**: coloca um subsistema aleatório em **estado crítico**
+  (vermelho, piscando), **registra uma entrada no Log Operacional** (no topo) e muda o
+  diagnóstico para “Operação suspensa”.
+- **Botão “Normalizar sistemas”**: devolve tudo à faixa normal e registra no log.
+
+### Recursos de JavaScript usados
+- **DOM:** criação/alteração de elementos (valores, medidores, selos, alertas, linhas de log).
+- **Eventos:** cliques em botões e digitação no filtro (`addEventListener`).
+- **BOM / Timers:** `setInterval` (perfuração, contagem regressiva, telemetria) e `setTimeout`
+  (atraso de comunicação Terra-Sonda).

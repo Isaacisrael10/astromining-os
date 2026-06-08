@@ -1,0 +1,153 @@
+/* ============================================================
+   interactive.css — Estados visuais controlados via JavaScript
+   Disciplina: Web Development (WD) — AstroMining OS
+   (Carregado DEPOIS de style.css, então pode sobrescrever quando preciso)
+   ============================================================ */
+
+/* ---------- Notificações (toasts) ---------- */
+.toast-layer {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 330px;
+}
+
+.toast {
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--panel-strong);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    animation: toastIn 0.25s ease;
+}
+
+.toast-info    { border-left-color: var(--cyan); }
+.toast-success { border-left-color: var(--green); }
+.toast-warning { border-left-color: var(--gold); }
+.toast-danger  { border-left-color: var(--red); }
+
+.toast-out {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: 0.3s ease;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Estado de perigo (cartões, selos e medidores) ---------- */
+.metric-card.danger,
+.system-card.danger {
+    border-left: 4px solid var(--red);
+}
+
+.state-badge.danger,
+.status-pill.danger {
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.55);
+    background: rgba(239, 68, 68, 0.10);
+}
+
+.meter.danger .meter-fill {
+    background: var(--red);
+    box-shadow: 0 0 14px var(--red);
+}
+
+/* ---------- Recomendação (decision-callout) muda de cor por estado ---------- */
+.decision-callout.state-safe {
+    border-color: rgba(34, 197, 94, 0.45);
+    background: rgba(34, 197, 94, 0.10);
+}
+.decision-callout.state-attention {
+    border-color: var(--border-gold);
+    background: var(--gold-soft);
+}
+.decision-callout.state-danger {
+    border-color: rgba(239, 68, 68, 0.50);
+    background: rgba(239, 68, 68, 0.12);
+}
+.decision-callout.state-safe span   { color: var(--green); }
+.decision-callout.state-danger span { color: var(--red); }
+
+/* ---------- Piscar para chamar atenção em alertas críticos ---------- */
+.blink { animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { 50% { opacity: 0.45; } }
+
+/* ---------- Destaque de linha de tabela selecionada ---------- */
+.row-highlight { background: rgba(245, 164, 0, 0.12); }
+
+/* ---------- Relógio de missão injetado na barra lateral ---------- */
+.mission-clock {
+    margin-top: 12px;
+    color: var(--cyan);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+.mission-clock span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+}
+
+/* ---------- Controles injetados via JS (ex.: simular falha) ---------- */
+.js-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 var(--space-md);
+}
+.js-controls button {
+    font-family: var(--font);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--cyan);
+    background: rgba(0, 242, 254, 0.06);
+    color: var(--cyan);
+    transition: 0.2s ease;
+}
+.js-controls button:hover { background: rgba(0, 242, 254, 0.14); }
+.js-controls button.danger {
+    border-color: var(--red);
+    color: var(--red);
+    background: rgba(239, 68, 68, 0.08);
+}
+.js-controls button.danger:hover { background: rgba(239, 68, 68, 0.16); }
+
+/* ---------- Campo de filtro injetado via JS ---------- */
+.js-filter { margin: 0 0 var(--space-md); }
+.js-filter input {
+    width: 100%;
+    max-width: 340px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(0, 242, 254, 0.04);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+}
+.js-filter input::placeholder { color: var(--muted); }
+
+/* Acessibilidade: respeita quem prefere menos animação */
+@media (prefers-reduced-motion: reduce) {
+    .blink, .toast { animation: none; }
+}

@@ -372,8 +372,8 @@
    ============================================================ */
 .briefing-grid {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: var(--space-lg);
+    grid-template-columns: 1fr 1.05fr;
+    gap: var(--space-xl);
     margin-top: var(--space-md);
     align-items: center;
 }
@@ -444,3 +444,18 @@
     }
     .timeline li::before { left: -6px; top: 2px; }
 }
+
+/* ---- legibilidade do briefing: fontes maiores e mais respiro ---- */
+.mission-briefing .panel-heading h2 { font-size: 22px; }
+.mission-briefing .kv-list { gap: 0; }
+.mission-briefing .kv-list li {
+    padding: 13px 0;
+    align-items: baseline;
+    gap: 20px;
+}
+.mission-briefing .kv-list li span { font-size: 14px; }
+.mission-briefing .kv-list li strong { font-size: 16px; text-align: right; line-height: 1.35; }
+.mission-briefing .briefing-sub { font-size: 14px; }
+.mission-briefing .timeline span { font-size: 13px; }
+.mission-briefing .timeline strong { font-size: 18px; }
+.mission-briefing .timeline p { font-size: 14px; line-height: 1.45; }

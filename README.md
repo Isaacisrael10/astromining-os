@@ -168,20 +168,33 @@ Passo a passo do que clicar e o que acontece na tela. O JavaScript fica na pasta
   - o botão vira **“Pausar Perfuração”** — clique de novo para parar;
   - se a carga encher ou o combustível acabar, a perfuração **para sozinha** com um aviso.
 - **Telemetria de sinal:** os valores de “Sinal” (mapa) e “Comunicação” mudam sozinhos a cada 3s.
-- **Qualquer outro botão** (Missão, Distância, Ver combustível, pinos do mapa, etc.): simula um
-  **comando com atraso de comunicação** — mostra “aguardando resposta da sonda...” e, após
-  1–2s, a confirmação.
+- **Cartões de indicador** — clique em “Ver combustível / carga / broca / energia” para abrir um
+  **painel lateral com gráfico ao vivo** do histórico daquele indicador (atualiza em tempo real).
+- **Mapa tático interativo:**
+  - clique nos **pinos coloridos** (ouro, ferro, platina) para abrir um painel com o **gráfico de
+    pureza** e os dados do ponto;
+  - clique no botão **“Escanear setor”** para varrer a área — os pinos somem e **reaparecem um a
+    um**, e cada achado vira uma notificação;
+  - **clique em qualquer ponto do mapa** para **definir o alvo de perfuração** (aparece um marcador
+    e o “Setor” é atualizado).
+- **Demais botões** (Missão, Distância, etc.): simulam um **comando com atraso de comunicação** —
+  “aguardando resposta da sonda...” e, após 1–2s, a confirmação.
 
 ### ☄️ Asteroides (`asteroides.html`)
 - **Clique em qualquer card de asteroide** (Psyche 16, Bennu, Ryugu, Apophis): o card fica
   **destacado** e o painel **“Alvo Selecionado”** (à direita) atualiza o nome, o status e os
   percentuais de Platina / Ferro / Níquel / Viabilidade daquele alvo.
+- **Botão “Ver composição (gráfico)”** (no painel de detalhe): abre um painel lateral com um
+  **gráfico de barras** comparando Platina, Ferro e Níquel do alvo selecionado.
 
 ### ⛏️ Minérios (`minerios.html`)
-- **Campo de filtro** (acima da tabela): digite um nome (ex.: “platina”) e a tabela
-  **filtra as linhas** em tempo real.
-- **Botão “Ordenar por valor”**: reordena a tabela por valor, alternando crescente/decrescente.
-- **Botão “Detalhes”** de uma linha: destaca a linha e simula a consulta (com atraso).
+- **Gráfico de barras** (acima da tabela): mostra a **massa de cada minério** e **reage** ao filtro
+  e à ordenação.
+- **Campo de filtro** (acima da tabela): digite um nome (ex.: “platina”) e a tabela e o gráfico
+  **filtram** em tempo real.
+- **Botão “Ordenar por valor”**: reordena a tabela (e o gráfico), alternando crescente/decrescente.
+- **Botão “Detalhes”** de uma linha: abre um **painel lateral** com o **gráfico de pureza** e os
+  dados do minério.
 
 ### 🔧 Sistemas (`sistemas.html`)
 - **Telemetria:** o valor de “Energia” oscila sozinho a cada poucos segundos.
@@ -189,9 +202,12 @@ Passo a passo do que clicar e o que acontece na tela. O JavaScript fica na pasta
   (vermelho, piscando), **registra uma entrada no Log Operacional** (no topo) e muda o
   diagnóstico para “Operação suspensa”.
 - **Botão “Normalizar sistemas”**: devolve tudo à faixa normal e registra no log.
+- **Botão “Detalhes”** de um subsistema: abre um **painel lateral** com o **gráfico do histórico**
+  (sparkline) daquele sensor, atualizando ao vivo.
 
 ### Recursos de JavaScript usados
-- **DOM:** criação/alteração de elementos (valores, medidores, selos, alertas, linhas de log).
-- **Eventos:** cliques em botões e digitação no filtro (`addEventListener`).
+- **DOM:** criação/alteração de elementos (valores, medidores, selos, alertas, linhas de log, painéis).
+- **Eventos:** cliques em botões/cards/mapa e digitação no filtro (`addEventListener`).
 - **BOM / Timers:** `setInterval` (perfuração, contagem regressiva, telemetria) e `setTimeout`
   (atraso de comunicação Terra-Sonda).
+- **Gráficos:** Chart.js (em `js/vendor/`, funciona offline) exibido em **painéis laterais (drawer)**.

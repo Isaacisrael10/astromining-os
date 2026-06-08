@@ -151,3 +151,126 @@
 @media (prefers-reduced-motion: reduce) {
     .blink, .toast { animation: none; }
 }
+
+/* ============================================================
+   Drawer lateral + gráficos (Chart.js)
+   ============================================================ */
+
+/* fundo escurecido atrás do painel */
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 8, 10, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s ease;
+    z-index: 9990;
+}
+.drawer-backdrop.show { opacity: 1; visibility: visible; }
+
+/* painel que desliza da direita */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(460px, 92vw);
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+    z-index: 9991;
+    background: linear-gradient(180deg, rgba(7, 24, 28, 0.98), rgba(4, 14, 16, 0.98));
+    border-left: 1px solid var(--border);
+    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+.drawer.show { transform: none; }
+
+.drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--border);
+}
+.drawer-title {
+    font-family: var(--font);
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.drawer-close {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--cyan);
+    font-size: 16px;
+    cursor: pointer;
+}
+.drawer-close:hover { background: rgba(0, 242, 254, 0.1); }
+
+.drawer-body {
+    padding: var(--space-lg);
+    overflow-y: auto;
+}
+.drawer-body h3 {
+    color: var(--cyan);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 8px;
+}
+.drawer-body p { color: var(--muted); font-size: 14px; line-height: 1.4; }
+
+/* área onde o gráfico é desenhado */
+.chart-wrap {
+    position: relative;
+    height: 260px;
+    margin: 6px 0 16px;
+}
+.panel-chart {
+    position: relative;
+    height: 240px;
+    margin-top: var(--space-md);
+}
+
+/* lista de chave/valor dentro do drawer */
+.kv-list { list-style: none; display: grid; gap: 10px; margin-top: 6px; }
+.kv-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+.kv-list li span { color: var(--muted); }
+.kv-list li strong { color: #fff; }
+
+/* pinos do mapa: transição para o efeito de escaneamento */
+.mineral-pin { transition: transform 0.2s ease, opacity 0.35s ease; }
+.pin-hidden { opacity: 0; transform: scale(0); pointer-events: none; }
+
+/* marcador de alvo de perfuração colocado ao clicar no mapa */
+.map-target {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold);
+    pointer-events: none;
+}
+.map-target::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(245, 164, 0, 0.4);
+    border-radius: 50%;
+}
+.map-stage { cursor: crosshair; }

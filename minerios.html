@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroMining OS - Minérios</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Menu de controle da missão">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true"></div>
+                <div>
+                    <strong>ASTRO</strong><span>MINING</span>
+                    <small>// SOND-01</small>
+                </div>
+            </div>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="index.html"><span aria-hidden="true">■</span> Dashboard</a>
+                <a href="asteroides.html"><span aria-hidden="true">⬡</span> Asteroides</a>
+                <a href="minerios.html" class="active" aria-current="page"><span aria-hidden="true">◈</span> Minérios</a>
+                <a href="sistemas.html"><span aria-hidden="true">⚙</span> Sistemas</a>
+            </nav>
+
+            <div class="sidebar-status" role="status">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                SISTEMA ONLINE
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="page-header">
+                <p class="eyebrow">Triagem Automatizada // Carga Mineral</p>
+                <h1>Minérios Coletados</h1>
+                <p class="subtitle">Controle de massa, pureza, valor operacional e prioridade de armazenamento da carga extraída.</p>
+            </header>
+
+            <section class="overview-grid" aria-label="Resumo da carga mineral">
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <h2>Total Coletado</h2>
+                        <span class="state-badge neutral">35%</span>
+                    </div>
+                    <div class="metric-value">1.750<span>kg</span></div>
+                    <p>Carga abaixo do limite máximo da nave.</p>
+                    <button type="button" class="card-action" data-action="view-total-cargo">Ver carga</button>
+                </article>
+
+                <article class="metric-card safe">
+                    <div class="metric-top">
+                        <h2>Mais Valioso</h2>
+                        <span class="state-badge ok">Prioritário</span>
+                    </div>
+                    <div class="metric-value">Pt<span>88%</span></div>
+                    <p>Platina apresenta maior pureza e retorno estimado.</p>
+                    <button type="button" class="card-action" data-action="view-platinum">Ver platina</button>
+                </article>
+
+                <article class="metric-card warning">
+                    <div class="metric-top">
+                        <h2>Pureza Média</h2>
+                        <span class="state-badge attention">Atenção</span>
+                    </div>
+                    <div class="metric-value">75<span>%</span></div>
+                    <p>Triagem deve priorizar minérios acima de 80%.</p>
+                    <button type="button" class="card-action" data-action="view-purity">Ver pureza</button>
+                </article>
+            </section>
+
+            <section class="panel full-panel" aria-labelledby="tabela-minerios">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Inventário Mineral</p>
+                        <h2 id="tabela-minerios">Tabela de Carga</h2>
+                    </div>
+                    <button type="button" class="state-badge attention badge-button" data-action="sort-value">Ordenar por valor</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="minerals-table">
+                        <caption>Dados de triagem, aplicação industrial e prioridade dos minérios coletados.</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Minério</th>
+                                <th scope="col">Massa</th>
+                                <th scope="col">Pureza</th>
+                                <th scope="col">Aplicação</th>
+                                <th scope="col">Valor</th>
+                                <th scope="col">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Platina</td>
+                                <td>620kg</td>
+                                <td>88%</td>
+                                <td>Catalisadores e células de combustível</td>
+                                <td>Alto</td>
+                                <td><button type="button" class="status-pill high" data-action="details-platinum">Detalhes</button></td>
+                            </tr>
+                            <tr>
+                                <td>Ouro</td>
+                                <td>410kg</td>
+                                <td>74%</td>
+                                <td>Eletrônicos e sistemas de precisão</td>
+                                <td>Médio</td>
+                                <td><button type="button" class="status-pill attention" data-action="details-gold">Detalhes</button></td>
+                            </tr>
+                            <tr>
+                                <td>Ferro</td>
+                                <td>720kg</td>
+                                <td>63%</td>
+                                <td>Estruturas e ligas metálicas</td>
+                                <td>Baixo</td>
+                                <td><button type="button" class="status-pill ok" data-action="details-iron">Detalhes</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

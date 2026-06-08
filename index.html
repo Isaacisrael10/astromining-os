@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroMining OS - Interface da Missão</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Menu de controle da missão">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true"></div>
+                <div>
+                    <strong>ASTRO</strong><span>MINING</span>
+                    <small>// SOND-01</small>
+                </div>
+            </div>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+    <a href="index.html" class="active" aria-current="page"><span aria-hidden="true">■</span> Dashboard</a>
+    <a href="asteroides.html"><span aria-hidden="true">⬡</span> Asteroides</a>
+    <a href="minerios.html"><span aria-hidden="true">◈</span> Minérios</a>
+    <a href="sistemas.html"><span aria-hidden="true">⚙</span> Sistemas</a>
+            </nav>
+
+            <div class="sidebar-status" role="status">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                SISTEMA ONLINE
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="mission-header">
+                <div>
+                    <p class="eyebrow">Centro de Controle Terrestre // Interface da Missão</p>
+                    <h1>Painel Tático de Mineração</h1>
+                    <p class="subtitle">Telemetria visual para decidir, em segundos, se a sonda deve continuar, pausar ou retornar.</p>
+                </div>
+
+                <section class="mission-strip" aria-label="Resumo da missão">
+                    <button type="button" data-action="view-mission">
+                        <span>Missão</span>
+                        <strong>AM-26 Psyche</strong>
+                    </button>
+                    <button type="button" data-action="view-asteroid">
+                        <span>Asteroide</span>
+                        <strong>Psyche 16</strong>
+                    </button>
+                    <button type="button" data-action="view-signal-window">
+                        <span>Janela de Sinal</span>
+                        <strong>04:32h</strong>
+                    </button>
+                    <button type="button" class="warning" data-action="view-risk">
+                        <span>Risco</span>
+                        <strong>Atenção</strong>
+                    </button>
+                </section>
+            </header>
+
+            <section class="kpi-grid" aria-label="Indicadores principais da sonda">
+                <article class="metric-card safe">
+                    <div class="metric-top">
+                        <h2>Combustível</h2>
+                        <span class="state-badge ok">OK</span>
+                    </div>
+                    <div class="metric-value">100<span>%</span></div>
+                    <div class="meter" role="progressbar" aria-label="Nível de combustível" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <span class="meter-fill fill-100"></span>
+                    </div>
+                    <p>Autonomia suficiente para perfuração e retorno.</p>
+                    <button type="button" class="card-action" data-action="details-fuel">Ver combustível</button>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <h2>Carga Mineral</h2>
+                        <span class="state-badge neutral">35%</span>
+                    </div>
+                    <div class="metric-value">1.750<span>kg</span></div>
+                    <div class="meter" role="progressbar" aria-label="Capacidade de carga" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                        <span class="meter-fill fill-35"></span>
+                    </div>
+                    <p>Capacidade máxima operacional: 5.000kg.</p>
+                    <button type="button" class="card-action" data-action="details-cargo">Ver carga</button>
+                </article>
+
+                <article class="metric-card warning">
+                    <div class="metric-top">
+                        <h2>Broca</h2>
+                        <span class="state-badge attention">Atenção</span>
+                    </div>
+                    <div class="metric-value">72<span>%</span></div>
+                    <div class="meter gold" role="progressbar" aria-label="Pressão da broca" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+                        <span class="meter-fill fill-72"></span>
+                    </div>
+                    <p>Pressão normal, mas próxima da faixa de alerta.</p>
+                    <button type="button" class="card-action" data-action="details-drill">Ver broca</button>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <h2>Energia</h2>
+                        <span class="state-badge ok">Estável</span>
+                    </div>
+                    <div class="metric-value">92<span>%</span></div>
+                    <div class="meter" role="progressbar" aria-label="Nível de energia" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+                        <span class="meter-fill fill-92"></span>
+                    </div>
+                    <p>Bateria primária em condição segura.</p>
+                    <button type="button" class="card-action" data-action="details-energy">Ver energia</button>
+                </article>
+            </section>
+
+            <section class="dashboard-grid" aria-label="Painéis operacionais">
+                <section class="tactical-map panel" aria-labelledby="mapa-titulo">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Mapa Tático</p>
+                            <h2 id="mapa-titulo">Zona de Extração // Setor A-7</h2>
+                        </div>
+                        <button type="button" class="state-badge ok badge-button" data-action="view-orbit">Órbita Estável</button>
+                    </div>
+
+                    <div class="map-stage" role="img" aria-label="Mapa tático do asteroide Psyche 16 com zona de extração e marcadores minerais">
+                        <div class="orbit orbit-one"></div>
+                        <div class="orbit orbit-two"></div>
+                        <div class="asteroid"></div>
+                        <button type="button" class="mineral-pin pin-one" data-action="pin-gold" aria-label="Ver ponto de ouro"></button>
+                        <button type="button" class="mineral-pin pin-two" data-action="pin-iron" aria-label="Ver ponto de ferro"></button>
+                        <button type="button" class="mineral-pin pin-three" data-action="pin-platinum" aria-label="Ver ponto de platina"></button>
+                        <div class="scan-axis" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="map-data">
+                        <button type="button" data-action="view-distance">
+                            <span>Distância</span>
+                            <strong>1.500km</strong>
+                        </button>
+                        <button type="button" data-action="view-rotation">
+                            <span>Rotação</span>
+                            <strong>0.15 RPM</strong>
+                        </button>
+                        <button type="button" data-action="view-signal">
+                            <span>Sinal</span>
+                            <strong>96%</strong>
+                        </button>
+                        <button type="button" data-action="view-priority">
+                            <span>Prioridade</span>
+                            <strong>Alta</strong>
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="decision-panel panel" aria-labelledby="decisao-titulo">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Decisão Rápida</p>
+                            <h2 id="decisao-titulo">Status Operacional</h2>
+                        </div>
+                    </div>
+
+                    <button type="button" class="decision-callout" data-action="view-recommendation">
+                        <span>Recomendação</span>
+                        <strong>Continuar monitorando</strong>
+                        <p>Não iniciar nova perfuração até a latência estabilizar abaixo de 2.0s.</p>
+                    </button>
+
+                    <ul class="alert-list" aria-label="Alertas críticos">
+                        <li class="alert-item attention">
+                            <button type="button" data-action="alert-latency">
+                                <strong>Latência elevada</strong>
+                                <span>2.4s // Monitorar comunicação</span>
+                            </button>
+                        </li>
+                        <li class="alert-item ok">
+                            <button type="button" data-action="alert-pressure">
+                                <strong>Pressão controlada</strong>
+                                <span>72% // Dentro do limite</span>
+                            </button>
+                        </li>
+                        <li class="alert-item ok">
+                            <button type="button" data-action="alert-cargo">
+                                <strong>Carga segura</strong>
+                                <span>35% // Retorno não recomendado</span>
+                            </button>
+                        </li>
+                    </ul>
+                </aside>
+
+                <section class="minerals-panel panel" aria-labelledby="minerios-titulo">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Triagem Automatizada</p>
+                            <h2 id="minerios-titulo">Minérios Coletados</h2>
+                        </div>
+                        <button type="button" class="state-badge attention badge-button" data-action="prioritize-platinum">Priorizar Platina</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="minerals-table">
+                            <caption>Resumo operacional dos minérios extraídos pela sonda SOND-01.</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Minério</th>
+                                    <th scope="col">Massa</th>
+                                    <th scope="col">Pureza</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Platina</td>
+                                    <td>620kg</td>
+                                    <td>88%</td>
+                                    <td>Alto</td>
+                                    <td><button type="button" class="status-pill high" data-action="mineral-platinum">Detalhes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Ouro</td>
+                                    <td>410kg</td>
+                                    <td>74%</td>
+                                    <td>Médio</td>
+                                    <td><button type="button" class="status-pill attention" data-action="mineral-gold">Detalhes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Ferro</td>
+                                    <td>720kg</td>
+                                    <td>63%</td>
+                                    <td>Baixo</td>
+                                    <td><button type="button" class="status-pill ok" data-action="mineral-iron">Detalhes</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="systems-panel panel" aria-label="Subsistemas da sonda">
+                    <button type="button" class="mini-system" data-action="system-communication">
+                        <span>Comunicação Terra-Sonda</span>
+                        <strong>96%</strong>
+                    </button>
+                    <button type="button" class="mini-system" data-action="system-temperature">
+                        <span>Temperatura Interna</span>
+                        <strong>31°C</strong>
+                    </button>
+                    <button type="button" class="mini-system" data-action="system-arm">
+                        <span>Integridade do Braço</span>
+                        <strong>98%</strong>
+                    </button>
+                </section>
+            </section>
+
+            <footer class="command-footer">
+                <div>
+                    <span>Comandos de teleoperação</span>
+                    <strong>Pronto para integração com Web Development</strong>
+                </div>
+                <button id="startMiningButton" class="btn-command" type="button" data-action="start-mining" aria-label="Iniciar perfuração remota no solo do asteroide">
+                    Iniciar Perfuração
+                </button>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

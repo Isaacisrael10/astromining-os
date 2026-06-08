@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroMining OS - Sistemas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Menu de controle da missão">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true"></div>
+                <div>
+                    <strong>ASTRO</strong><span>MINING</span>
+                    <small>// SOND-01</small>
+                </div>
+            </div>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="index.html"><span aria-hidden="true">■</span> Dashboard</a>
+                <a href="asteroides.html"><span aria-hidden="true">⬡</span> Asteroides</a>
+                <a href="minerios.html"><span aria-hidden="true">◈</span> Minérios</a>
+                <a href="sistemas.html" class="active" aria-current="page"><span aria-hidden="true">⚙</span> Sistemas</a>
+            </nav>
+
+            <div class="sidebar-status" role="status">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                SISTEMA ONLINE
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="page-header">
+                <p class="eyebrow">Telemetria Técnica // Saúde da Sonda</p>
+                <h1>Subsistemas da SOND-01</h1>
+                <p class="subtitle">Monitoramento de energia, temperatura, comunicação, broca e braço mecânico para prevenir falhas durante a missão.</p>
+            </header>
+
+            <section class="system-health-grid" aria-label="Saúde dos subsistemas">
+                <article class="system-card ok">
+                    <h2>Energia</h2>
+                    <strong>92%</strong>
+                    <p>Bateria primária estável.</p>
+                    <button type="button" class="card-action" data-action="system-energy">Detalhes</button>
+                </article>
+
+                <article class="system-card attention">
+                    <h2>Broca</h2>
+                    <strong>72%</strong>
+                    <p>Pressão próxima da faixa de alerta.</p>
+                    <button type="button" class="card-action" data-action="system-drill">Detalhes</button>
+                </article>
+
+                <article class="system-card ok">
+                    <h2>Braço Mecânico</h2>
+                    <strong>98%</strong>
+                    <p>Integridade estrutural preservada.</p>
+                    <button type="button" class="card-action" data-action="system-arm">Detalhes</button>
+                </article>
+
+                <article class="system-card attention">
+                    <h2>Comunicação</h2>
+                    <strong>2.4s</strong>
+                    <p>Latência acima do ideal.</p>
+                    <button type="button" class="card-action" data-action="system-signal">Detalhes</button>
+                </article>
+            </section>
+
+            <section class="page-grid">
+                <section class="panel full-panel" aria-labelledby="logs-titulo">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Eventos Recentes</p>
+                            <h2 id="logs-titulo">Log Operacional</h2>
+                        </div>
+                    </div>
+
+                    <ul class="log-list">
+                        <li><span>21:04</span><strong>Correção de sinal aplicada</strong><p>Latência reduzida de 2.8s para 2.4s.</p></li>
+                        <li><span>20:58</span><strong>Broca em modo ocioso</strong><p>Perfuração pausada para leitura de pressão.</p></li>
+                        <li><span>20:43</span><strong>Carga mineral atualizada</strong><p>Entrada de 120kg de platina no compartimento A.</p></li>
+                    </ul>
+                </section>
+
+                <aside class="panel target-detail-panel" aria-labelledby="diagnostico-titulo">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Diagnóstico</p>
+                            <h2 id="diagnostico-titulo">Recomendação Técnica</h2>
+                        </div>
+                    </div>
+
+                    <div class="decision-callout">
+                        <span>Status</span>
+                        <strong>Operação permitida</strong>
+                        <p>Manter monitoramento da comunicação antes de iniciar novo ciclo de perfuração.</p>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

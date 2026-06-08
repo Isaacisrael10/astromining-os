@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroMining OS - Asteroides</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Menu de controle da missão">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true"></div>
+                <div>
+                    <strong>ASTRO</strong><span>MINING</span>
+                    <small>// SOND-01</small>
+                </div>
+            </div>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="index.html"><span aria-hidden="true">■</span> Dashboard</a>
+                <a href="asteroides.html" class="active" aria-current="page"><span aria-hidden="true">⬡</span> Asteroides</a>
+                <a href="minerios.html"><span aria-hidden="true">◈</span> Minérios</a>
+                <a href="sistemas.html"><span aria-hidden="true">⚙</span> Sistemas</a>
+            </nav>
+
+            <div class="sidebar-status" role="status">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                SISTEMA ONLINE
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="page-header">
+                <p class="eyebrow">Análise de Alvos // Seleção de Asteroides</p>
+                <h1>Asteroides Mapeados</h1>
+                <p class="subtitle">Comparação de alvos próximos à Terra para definir prioridade de mineração, risco e retorno mineral.</p>
+            </header>
+
+            <section class="overview-grid" aria-label="Resumo dos asteroides">
+                <article class="metric-card safe">
+                    <div class="metric-top">
+                        <h2>Alvo Principal</h2>
+                        <span class="state-badge ok">Recomendado</span>
+                    </div>
+                    <div class="metric-value">Psyche<span>16</span></div>
+                    <p>Maior concentração metálica entre os asteroides analisados.</p>
+                    <button type="button" class="card-action" data-action="target-psyche">Ver alvo</button>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <h2>Distância Média</h2>
+                        <span class="state-badge neutral">Operável</span>
+                    </div>
+                    <div class="metric-value">1.500<span>km</span></div>
+                    <p>Dentro da janela atual de comunicação e teleoperação.</p>
+                    <button type="button" class="card-action" data-action="distance-analysis">Analisar rota</button>
+                </article>
+
+                <article class="metric-card warning">
+                    <div class="metric-top">
+                        <h2>Risco Orbital</h2>
+                        <span class="state-badge attention">Médio</span>
+                    </div>
+                    <div class="metric-value">42<span>%</span></div>
+                    <p>Alguns alvos exigem correção de trajetória antes da aproximação.</p>
+                    <button type="button" class="card-action" data-action="risk-analysis">Ver risco</button>
+                </article>
+            </section>
+
+            <section class="page-grid page-grid-wide">
+                <section class="panel target-list-panel" aria-labelledby="lista-asteroides">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Ranking de Alvos</p>
+                            <h2 id="lista-asteroides">Asteroides Candidatos</h2>
+                        </div>
+                    </div>
+
+                    <div class="target-grid">
+                        <button type="button" class="target-card selected" data-action="select-psyche">
+                            <span class="target-status high">Prioridade Alta</span>
+                            <strong>Psyche 16</strong>
+                            <p>Alta presença de platina, ferro e níquel. Melhor retorno mineral estimado.</p>
+                            <small>Risco: médio // Distância: 1.500km</small>
+                        </button>
+
+                        <button type="button" class="target-card" data-action="select-bennu">
+                            <span class="target-status medium">Em Análise</span>
+                            <strong>Bennu</strong>
+                            <p>Composição rica em carbono e traços metálicos. Boa opção científica.</p>
+                            <small>Risco: baixo // Distância: 2.100km</small>
+                        </button>
+
+                        <button type="button" class="target-card" data-action="select-ryugu">
+                            <span class="target-status low">Baixa Prioridade</span>
+                            <strong>Ryugu</strong>
+                            <p>Baixa massa extraível para a missão atual. Retorno financeiro limitado.</p>
+                            <small>Risco: baixo // Distância: 2.850km</small>
+                        </button>
+
+                        <button type="button" class="target-card danger" data-action="select-apophis">
+                            <span class="target-status danger">Alto Risco</span>
+                            <strong>Apophis</strong>
+                            <p>Rota instável e alto custo de aproximação. Não recomendado nesta janela.</p>
+                            <small>Risco: alto // Distância: 3.200km</small>
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="panel target-detail-panel" aria-labelledby="alvo-selecionado">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="panel-kicker">Alvo Selecionado</p>
+                            <h2 id="alvo-selecionado">Psyche 16</h2>
+                        </div>
+                        <span class="state-badge attention">Mineral Rico</span>
+                    </div>
+
+                    <div class="asteroid-preview" aria-hidden="true">
+                        <div class="asteroid"></div>
+                        <div class="orbit orbit-one"></div>
+                    </div>
+
+                    <ul class="spec-list">
+                        <li><span>Platina estimada</span><strong>30%</strong></li>
+                        <li><span>Ferro estimado</span><strong>42%</strong></li>
+                        <li><span>Níquel estimado</span><strong>18%</strong></li>
+                        <li><span>Viabilidade</span><strong>Alta</strong></li>
+                    </ul>
+                </aside>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

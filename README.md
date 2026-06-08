@@ -125,9 +125,8 @@ Por ser um site estático (apenas HTML e CSS), **não requer instalação**:
 ├── css/
 │   └── style.css       # tokens + componentes reutilizáveis
 └── assets/                       # moodboard e referências visuais
-    ├── AstroMining-Moodboard.pdf  # moodboard (direção visual + anatomia das telas)
-    ├── moodboard.html             # fonte do moodboard
-    └── screenshots/               # capturas das telas
+    ├── AstroMining-Moodboard.pdf  # moodboard completo (direção visual, análise crítica e anatomia das telas)
+    └── references/                # imagens de inspiração (NASA, glass cockpit)
 ```
 
 ---

@@ -171,12 +171,18 @@ Passo a passo do que clicar e o que acontece na tela. O JavaScript fica na pasta
 - **Cartões de indicador** — clique em “Ver combustível / carga / broca / energia” para abrir um
   **painel lateral com gráfico ao vivo** do histórico daquele indicador (atualiza em tempo real).
 - **Mapa tático interativo:**
+  - **mova o mouse** sobre o mapa: um **retículo (mira)** segue o cursor mostrando o **setor**;
+  - **arraste a sonda ▲** (marcador dourado): ela acompanha o mouse, a **linha até o núcleo** segue
+    e a **Distância** atualiza ao vivo;
+  - **zoom** pelos botões **＋ − ⟲** no canto (ou **Ctrl + roda do mouse**) e **arraste o fundo**
+    para mover (pan) a cena;
   - clique nos **pinos coloridos** (ouro, ferro, platina) para abrir um painel com o **gráfico de
     pureza** e os dados do ponto;
-  - clique no botão **“Escanear setor”** para varrer a área — os pinos somem e **reaparecem um a
-    um**, e cada achado vira uma notificação;
-  - **clique em qualquer ponto do mapa** para **definir o alvo de perfuração** (aparece um marcador
-    e o “Setor” é atualizado).
+  - clique no botão **“Escanear setor”** para varrer a área — os pinos somem e **reaparecem um a um**;
+  - **clique em qualquer ponto** do mapa para **definir o alvo de perfuração** (marcador + “Setor”).
+
+  > Observação: a roda do mouse **sem Ctrl rola a página normalmente** — o zoom só ativa com Ctrl
+  > (ou pelos botões), para não atrapalhar a navegação.
 - **Demais botões** (Missão, Distância, etc.): simulam um **comando com atraso de comunicação** —
   “aguardando resposta da sonda...” e, após 1–2s, a confirmação.
 

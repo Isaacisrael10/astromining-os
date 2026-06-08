@@ -352,7 +352,7 @@
     stage.appendChild(ctrl);
     var hint = document.createElement("div");
     hint.className = "map-hint";
-    hint.textContent = "Arraste a sonda ▲ • role p/ zoom • arraste o fundo p/ mover • clique p/ mirar";
+    hint.textContent = "Arraste a sonda ▲ • use +/− p/ zoom (ou Ctrl+roda) • arraste o fundo p/ mover • clique p/ mirar";
     stage.appendChild(hint);
 
     // ----- Retículo segue o mouse -----
@@ -423,9 +423,11 @@
       }
     });
 
-    // ----- Zoom com a roda do mouse -----
+    // ----- Zoom com a roda do mouse SOMENTE com Ctrl pressionado -----
+    // (sem Ctrl, a roda rola a página normalmente — evita "sequestrar" o scroll)
     stage.addEventListener("wheel", function (e) {
-      e.preventDefault();
+      if (!e.ctrlKey) return;          // deixa a página rolar
+      e.preventDefault();              // só aqui assumimos a roda = zoom
       view.escala = Math.max(0.6, Math.min(2.5, view.escala + (e.deltaY < 0 ? 0.12 : -0.12)));
       aplicarView();
     }, { passive: false });

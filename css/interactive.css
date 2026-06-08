@@ -274,3 +274,95 @@
     border-radius: 50%;
 }
 .map-stage { cursor: crosshair; }
+
+/* ---------- Mapa tático interativo (pan / zoom / sonda / retículo) ---------- */
+/* a "cena" agrupa asteroide+órbitas+pinos para mover/dar zoom juntos */
+.map-scene {
+    position: absolute;
+    inset: 0;
+    transform-origin: center center;
+    will-change: transform;
+}
+
+/* retículo que segue o mouse */
+.map-reticle {
+    position: absolute;
+    width: 0; height: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    z-index: 6;
+}
+.map-reticle.show { opacity: 1; }
+.map-reticle-h {
+    position: absolute; top: 0; left: -2000px;
+    width: 4000px; height: 1px;
+    background: rgba(0, 242, 254, 0.35);
+}
+.map-reticle-v {
+    position: absolute; left: 0; top: -2000px;
+    width: 1px; height: 4000px;
+    background: rgba(0, 242, 254, 0.35);
+}
+.map-reticle-label {
+    position: absolute; left: 10px; top: 10px;
+    white-space: nowrap;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--cyan);
+    background: rgba(3, 8, 10, 0.7);
+    padding: 2px 6px; border-radius: 3px;
+}
+
+/* sonda arrastável + linha (tether) até o núcleo do asteroide */
+.map-probe {
+    position: absolute;
+    z-index: 7;
+    width: 26px; height: 26px;
+    margin: -13px 0 0 -13px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: rgba(245, 164, 0, 0.16);
+    color: var(--gold);
+    font-size: 12px;
+    cursor: grab;
+    box-shadow: 0 0 14px rgba(245, 164, 0, 0.5);
+    display: flex; align-items: center; justify-content: center;
+}
+.map-probe:hover { background: rgba(245, 164, 0, 0.30); }
+.map-probe.dragging { cursor: grabbing; transform: scale(1.1); }
+.probe-tether {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245, 164, 0, 0.85), transparent);
+    transform-origin: left center;
+    z-index: 6;
+    pointer-events: none;
+}
+
+/* controles de zoom no canto do mapa */
+.map-zoom {
+    position: absolute; right: 10px; bottom: 10px;
+    display: flex; gap: 6px; z-index: 8;
+}
+.map-zoom button {
+    width: 30px; height: 30px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: rgba(3, 8, 10, 0.7);
+    color: var(--cyan);
+    font-size: 16px; line-height: 1;
+    cursor: pointer;
+}
+.map-zoom button:hover { background: rgba(0, 242, 254, 0.15); }
+
+/* dica de uso */
+.map-hint {
+    position: absolute; left: 10px; bottom: 10px;
+    z-index: 5;
+    font-size: 10px; letter-spacing: 0.3px;
+    color: var(--muted);
+    background: rgba(3, 8, 10, 0.6);
+    padding: 3px 7px; border-radius: 3px;
+    pointer-events: none;
+    max-width: 58%;
+}

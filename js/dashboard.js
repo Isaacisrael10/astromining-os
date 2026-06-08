@@ -287,26 +287,163 @@
     });
   }
 
-  // ---------- Mapa: clicar para definir alvo de perfuração ----------
-  function ativarCliqueMapa() {
+  // ---------- Mapa tático INTERATIVO: pan, zoom, sonda arrastável, retículo ----------
+  function initMapaInterativo() {
     var stage = document.querySelector(".map-stage");
     if (!stage) return;
-    var titulo = document.getElementById("mapa-titulo");
-    stage.addEventListener("click", function (e) {
-      if (e.target.closest(".mineral-pin")) return; // pino tem ação própria
+    var tituloMapa = document.getElementById("mapa-titulo");
+    var distanciaEl = document.querySelector('.map-data [data-action="view-distance"] strong');
+
+    function setorDe(x, y, r) {
+      var col = Math.max(0, Math.min(5, Math.floor(x / r.width * 6)));
+      var lin = Math.max(1, Math.min(9, Math.floor(y / r.height * 9) + 1));
+      return "ABCDEF".charAt(col) + "-" + lin;
+    }
+
+    // 1) Envolve o conteúdo do mapa numa "cena" que dá para mover/dar zoom
+    var cena = document.createElement("div");
+    cena.className = "map-scene";
+    while (stage.firstChild) cena.appendChild(stage.firstChild);
+    stage.appendChild(cena);
+
+    var view = { x: 0, y: 0, escala: 1 };
+    function aplicarView() {
+      cena.style.transform = "translate(" + view.x + "px," + view.y + "px) scale(" + view.escala + ")";
+    }
+
+    // 2) Retículo que segue o mouse
+    var reticulo = document.createElement("div");
+    reticulo.className = "map-reticle";
+    reticulo.innerHTML = '<span class="map-reticle-h"></span><span class="map-reticle-v"></span><span class="map-reticle-label"></span>';
+    stage.appendChild(reticulo);
+    var label = reticulo.querySelector(".map-reticle-label");
+
+    // 3) Sonda arrastável + linha (tether) até o centro
+    var tether = document.createElement("div");
+    tether.className = "probe-tether";
+    var probe = document.createElement("button");
+    probe.type = "button";
+    probe.className = "map-probe";
+    probe.setAttribute("aria-label", "Sonda SOND-01 — arraste para reposicionar");
+    probe.textContent = "▲";
+    stage.appendChild(tether);
+    stage.appendChild(probe);
+    var probePos = { x: 70, y: 70 };
+    function centro() { var r = stage.getBoundingClientRect(); return { x: r.width / 2, y: r.height / 2 }; }
+    function posicionarProbe() {
+      probe.style.left = probePos.x + "px";
+      probe.style.top = probePos.y + "px";
+      var c = centro();
+      var dx = c.x - probePos.x, dy = c.y - probePos.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      tether.style.left = probePos.x + "px";
+      tether.style.top = probePos.y + "px";
+      tether.style.width = dist + "px";
+      tether.style.transform = "rotate(" + (Math.atan2(dy, dx) * 180 / Math.PI) + "deg)";
+      if (distanciaEl) distanciaEl.textContent = Math.round(dist * 6).toLocaleString("pt-BR") + "km";
+    }
+
+    // 4) Controles de zoom e dica
+    var ctrl = document.createElement("div");
+    ctrl.className = "map-zoom";
+    ctrl.innerHTML = '<button type="button" data-z="in" aria-label="Aproximar">+</button>' +
+                     '<button type="button" data-z="out" aria-label="Afastar">−</button>' +
+                     '<button type="button" data-z="reset" aria-label="Resetar">⟲</button>';
+    stage.appendChild(ctrl);
+    var hint = document.createElement("div");
+    hint.className = "map-hint";
+    hint.textContent = "Arraste a sonda ▲ • role p/ zoom • arraste o fundo p/ mover • clique p/ mirar";
+    stage.appendChild(hint);
+
+    // ----- Retículo segue o mouse -----
+    stage.addEventListener("mousemove", function (e) {
       var r = stage.getBoundingClientRect();
       var x = e.clientX - r.left, y = e.clientY - r.top;
-      var antigo = stage.querySelector(".map-target");
-      if (antigo) antigo.remove();
-      var m = document.createElement("div");
-      m.className = "map-target";
-      m.style.left = x + "px";
-      m.style.top = y + "px";
-      stage.appendChild(m);
-      var setor = "ABCDEF".charAt(Math.floor(x / r.width * 6)) + "-" + (Math.floor(y / r.height * 9) + 1);
-      if (titulo) titulo.textContent = "Zona de Extração // Setor " + setor;
-      AstroUI.showToast("🎯 Alvo de perfuração definido: Setor " + setor, "info");
+      reticulo.style.left = x + "px";
+      reticulo.style.top = y + "px";
+      label.textContent = "Setor " + setorDe(x, y, r);
+      reticulo.classList.add("show");
     });
+    stage.addEventListener("mouseleave", function () { reticulo.classList.remove("show"); });
+
+    // ----- Arrastar a sonda -----
+    var arrastandoProbe = false;
+    probe.addEventListener("mousedown", function (e) {
+      arrastandoProbe = true; e.preventDefault(); e.stopPropagation();
+      probe.classList.add("dragging");
+    });
+
+    // ----- Pan (arrastar o fundo) vs clique (mirar) -----
+    var pan = null, moveu = false;
+    stage.addEventListener("mousedown", function (e) {
+      if (e.target.closest(".mineral-pin") || e.target.closest(".map-probe") || e.target.closest(".map-zoom")) return;
+      pan = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y };
+      moveu = false;
+    });
+
+    document.addEventListener("mousemove", function (e) {
+      if (arrastandoProbe) {
+        var r = stage.getBoundingClientRect();
+        probePos.x = Math.max(0, Math.min(r.width, e.clientX - r.left));
+        probePos.y = Math.max(0, Math.min(r.height, e.clientY - r.top));
+        posicionarProbe();
+        return;
+      }
+      if (pan) {
+        var dx = e.clientX - pan.x, dy = e.clientY - pan.y;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moveu = true;
+        if (moveu) { view.x = pan.vx + dx; view.y = pan.vy + dy; aplicarView(); }
+      }
+    });
+
+    document.addEventListener("mouseup", function (e) {
+      if (arrastandoProbe) {
+        arrastandoProbe = false; probe.classList.remove("dragging");
+        AstroUI.showToast("🛰️ Sonda reposicionada.", "info");
+        return;
+      }
+      if (pan) {
+        if (!moveu && !e.target.closest(".mineral-pin") && !e.target.closest(".map-zoom")) {
+          // clique simples no mapa -> define alvo de perfuração
+          var r = stage.getBoundingClientRect();
+          var x = e.clientX - r.left, y = e.clientY - r.top;
+          if (x >= 0 && y >= 0 && x <= r.width && y <= r.height) {
+            var antigo = stage.querySelector(".map-target");
+            if (antigo) antigo.remove();
+            var m = document.createElement("div");
+            m.className = "map-target";
+            m.style.left = x + "px"; m.style.top = y + "px";
+            stage.appendChild(m);
+            var setor = setorDe(x, y, r);
+            if (tituloMapa) tituloMapa.textContent = "Zona de Extração // Setor " + setor;
+            AstroUI.showToast("🎯 Alvo de perfuração definido: Setor " + setor, "info");
+          }
+        }
+        pan = null;
+      }
+    });
+
+    // ----- Zoom com a roda do mouse -----
+    stage.addEventListener("wheel", function (e) {
+      e.preventDefault();
+      view.escala = Math.max(0.6, Math.min(2.5, view.escala + (e.deltaY < 0 ? 0.12 : -0.12)));
+      aplicarView();
+    }, { passive: false });
+
+    // ----- Botões de zoom -----
+    ctrl.addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b) return;
+      e.stopPropagation();
+      var z = b.getAttribute("data-z");
+      if (z === "in") view.escala = Math.min(2.5, view.escala + 0.2);
+      else if (z === "out") view.escala = Math.max(0.6, view.escala - 0.2);
+      else { view.x = 0; view.y = 0; view.escala = 1; }
+      aplicarView();
+    });
+
+    posicionarProbe();
+    injetarEscanear(); // botão "Escanear setor"
   }
 
   // ---------- Contagem regressiva da janela de sinal ----------
@@ -355,8 +492,7 @@
 
   // ---------- Inicialização ----------
   render();
-  injetarEscanear();
-  ativarCliqueMapa();
+  initMapaInterativo();
   iniciarContagem();
   iniciarTelemetria();
 })();

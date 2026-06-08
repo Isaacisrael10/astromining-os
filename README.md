@@ -217,3 +217,17 @@ Passo a passo do que clicar e o que acontece na tela. O JavaScript fica na pasta
 - **BOM / Timers:** `setInterval` (perfuração, contagem regressiva, telemetria) e `setTimeout`
   (atraso de comunicação Terra-Sonda).
 - **Gráficos:** Chart.js (em `js/vendor/`, funciona offline) exibido em **painéis laterais (drawer)**.
+
+---
+
+## 10. Contexto da missão, créditos e fontes
+
+A interface é inspirada na **missão Psyche da NASA**, que estuda o asteroide **metálico
+16 Psyche** (tipo M, possível núcleo exposto de um protoplaneta). Marcos reais usados no
+briefing: lançamento em **out/2023**, sobrevoo de Marte em **mai/2026** e chegada prevista
+para **2029** (NASA · JPL-Caltech · ASU).
+
+- **Imagem:** concepção artística da sonda Psyche — **NASA/JPL-Caltech/ASU** (domínio
+  público), em `assets/mission/psyche-nasa.jpg`.
+- **Aviso:** os valores de telemetria, carga e pureza são **ilustrativos/simulados** para
+  fins acadêmicos (Global Solution 2026), não representam dados reais da missão.

@@ -67,8 +67,23 @@
     setInterval(tick, 1000); // setInterval = BOM
   }
 
+  // Rodapé de créditos + aviso de simulação (injetado em todas as telas)
+  function injetarCreditos() {
+    var main = document.querySelector(".main-panel");
+    if (!main || main.querySelector(".mission-credits")) return;
+    var el = document.createElement("footer");
+    el.className = "mission-credits";
+    el.innerHTML =
+      "Dados ilustrativos baseados na missão <strong>Psyche</strong> da NASA " +
+      "(NASA/JPL-Caltech/ASU). Telemetria simulada para fins acadêmicos — Global Solution 2026.";
+    main.appendChild(el);
+  }
+
   // Disponibiliza as funções para os scripts de cada página
   window.AstroUI = { showToast: showToast, comDelay: comDelay };
 
-  document.addEventListener("DOMContentLoaded", iniciarRelogio);
+  document.addEventListener("DOMContentLoaded", function () {
+    iniciarRelogio();
+    injetarCreditos();
+  });
 })();

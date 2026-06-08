@@ -366,3 +366,81 @@
     pointer-events: none;
     max-width: 58%;
 }
+
+/* ============================================================
+   Briefing da missão (Psyche) + créditos NASA
+   ============================================================ */
+.briefing-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    align-items: center;
+}
+.briefing-figure { margin: 0; }
+.briefing-figure img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;       /* vira um banner de altura fixa, sem dominar */
+    display: block;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+.briefing-figure figcaption {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+.briefing-sub {
+    color: var(--cyan);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: var(--space-lg) 0 var(--space-md);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+/* cronograma como 3 etapas horizontais */
+.timeline {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+.timeline li {
+    position: relative;
+    border-top: 2px solid var(--border);
+    padding-top: 14px;
+}
+.timeline li::before {
+    content: "";
+    position: absolute; left: 0; top: -6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
+}
+.timeline span { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+.timeline strong { display: block; color: #fff; margin-top: 4px; font-size: 15px; }
+.timeline p { color: var(--muted); font-size: 13px; margin-top: 4px; line-height: 1.4; }
+
+/* rodapé de créditos / aviso de simulação (injetado em todas as telas) */
+.mission-credits {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+.mission-credits strong { color: var(--cyan); }
+
+@media (max-width: 820px) {
+    .briefing-grid { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 1fr; }
+    .timeline li {
+        border-top: none;
+        border-left: 2px solid var(--border);
+        padding-top: 0;
+        padding-left: 18px;
+    }
+    .timeline li::before { left: -6px; top: 2px; }
+}

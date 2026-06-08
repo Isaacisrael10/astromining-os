@@ -1,5 +1,5 @@
 /* ============================================================
- * sistemas.js — Telemetria, falhas e histórico (sistemas.html)
+ * sistemas.js — Telemetria dos instrumentos da sonda Psyche (sistemas.html)
  * AstroMining OS — Web Development (WD)
  *
  * BOM/Timers   : telemetria oscila com setInterval e alimenta o histórico.
@@ -15,27 +15,32 @@
   var cards = Array.prototype.slice.call(grid.querySelectorAll(".system-card"));
   var log = document.querySelector(".log-list");
 
+  // localiza um cartão pelo início do título
   function card(titulo) {
     for (var i = 0; i < cards.length; i++) {
       if (cards[i].querySelector("h2").textContent.trim().indexOf(titulo) === 0) return cards[i];
     }
     return null;
   }
-  var cEnergia = card("Energia"), cBroca = card("Broca"), cBraco = card("Braço"), cCom = card("Comunicação");
+  var cPropulsao = card("Propulsão");
+  var cEspectro = card("Espectrômetro");
+  var cImageador = card("Imageador");
+  var cTelecom = card("Telecom");
 
   function numero(txt) { return parseFloat(txt.replace(/[^\d.,]/g, "").replace(",", ".")) || 0; }
 
-  // ---------- Histórico de cada subsistema (para os gráficos) ----------
-  var hist = { "Energia": [], "Broca": [], "Braço Mecânico": [], "Comunicação": [] };
+  // ---------- Histórico (chave = título completo do cartão) ----------
+  var hist = { "Propulsão Solar": [], "Espectrômetro GRNS": [], "Imageador Multiespectral": [], "Telecom Banda X": [] };
   function semear(chave, base, variacao) {
     for (var i = 0; i < 16; i++) hist[chave].push(+(base + (Math.random() * variacao - variacao / 2)).toFixed(1));
   }
-  semear("Energia", 92, 6);
-  semear("Broca", 72, 8);
-  semear("Braço Mecânico", 98, 3);
-  semear("Comunicação", 2.4, 1.2);
+  semear("Propulsão Solar", 92, 6);
+  semear("Espectrômetro GRNS", 72, 8);
+  semear("Imageador Multiespectral", 98, 3);
+  semear("Telecom Banda X", 2.4, 1.2);
 
   function empurrar(chave, valor) {
+    if (!hist[chave]) hist[chave] = [];
     hist[chave].push(+(+valor).toFixed(1));
     if (hist[chave].length > 24) hist[chave].shift();
   }
@@ -65,11 +70,11 @@
     callout.classList.toggle("blink", perigo);
   }
 
-  // ---------- Telemetria flutuante (setInterval) ----------
+  // ---------- Telemetria flutuante: propulsão solar (setInterval) ----------
   setInterval(function () {
-    var e = Math.round(88 + Math.random() * 8); // energia 88-96%
-    setCard(cEnergia, e + "%", e < 90 ? "attention" : "ok");
-    empurrar("Energia", e);
+    var p = Math.round(88 + Math.random() * 8); // 88-96%
+    setCard(cPropulsao, p + "%", p < 90 ? "attention" : "ok");
+    empurrar("Propulsão Solar", p);
   }, 4000);
 
   // ---------- Botões de controle (criados via JS) ----------
@@ -78,34 +83,34 @@
     var box = document.createElement("div");
     box.className = "js-controls";
     box.innerHTML =
-      '<button type="button" id="btn-falha" class="danger">Simular falha de subsistema</button>' +
+      '<button type="button" id="btn-falha" class="danger">Simular falha de instrumento</button>' +
       '<button type="button" id="btn-normalizar">Normalizar sistemas</button>';
     header.parentNode.insertBefore(box, header.nextSibling);
 
     document.getElementById("btn-falha").addEventListener("click", function () {
       var alvos = [
-        { c: cBroca, nome: "Broca", valor: 94, txt: "94%" },
-        { c: cCom, nome: "Comunicação", valor: 4.1, txt: "4.1s" },
-        { c: cBraco, nome: "Braço Mecânico", valor: 71, txt: "71%" }
+        { c: cEspectro, nome: "Espectrômetro GRNS", valor: 38, txt: "38%" },
+        { c: cTelecom, nome: "Telecom Banda X", valor: 4.1, txt: "4.1s" },
+        { c: cImageador, nome: "Imageador Multiespectral", valor: 61, txt: "61%" }
       ];
       var a = alvos[Math.floor(Math.random() * alvos.length)];
       setCard(a.c, a.txt, "danger");
       a.c.classList.add("blink");
-      empurrar(a.nome === "Broca" ? "Broca" : a.nome, a.valor);
+      empurrar(a.nome, a.valor);
       registrar("⚠️ Falha detectada", a.nome + " fora da faixa segura (" + a.txt + ").");
       AstroUI.showToast("⚠️ Falha simulada: " + a.nome, "danger");
       atualizarDiagnostico("Atenção: " + a.nome + " exige intervenção antes de novo ciclo.", true);
     });
 
     document.getElementById("btn-normalizar").addEventListener("click", function () {
-      setCard(cEnergia, "92%", "ok");
-      setCard(cBroca, "72%", "attention");
-      setCard(cBraco, "98%", "ok");
-      setCard(cCom, "2.4s", "attention");
+      setCard(cPropulsao, "92%", "ok");
+      setCard(cEspectro, "72%", "attention");
+      setCard(cImageador, "98%", "ok");
+      setCard(cTelecom, "2.4s", "attention");
       cards.forEach(function (c) { c.classList.remove("blink"); });
-      registrar("✅ Sistemas normalizados", "Todos os subsistemas retornaram à faixa operacional.");
+      registrar("✅ Sistemas normalizados", "Todos os instrumentos retornaram à faixa operacional.");
       AstroUI.showToast("✅ Sistemas normalizados.", "success");
-      atualizarDiagnostico("Operação permitida. Manter monitoramento da comunicação.", false);
+      atualizarDiagnostico("Operação permitida. Manter monitoramento da telecomunicação.", false);
     });
   }
 
@@ -119,7 +124,7 @@
     empurrar(nome, numero(valorAtual));
 
     AstroDrawer.open({
-      titulo: "Subsistema: " + nome,
+      titulo: "Instrumento: " + nome,
       conteudo: function (cont) {
         var p = document.createElement("p");
         p.textContent = "Leitura atual: " + valorAtual + ". Histórico recente do sensor abaixo.";

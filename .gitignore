@@ -20,3 +20,6 @@ docs/
 
 # Screenshots das telas (ficam locais; o PDF do moodboard ja as contem)
 assets/screenshots/
+
+# Fonte do moodboard (o PDF e a entrega final)
+assets/moodboard.html

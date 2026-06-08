@@ -17,3 +17,6 @@ python/__pycache__/
 # Outras disciplinas (nao fazem parte da entrega de Front-end)
 python/
 docs/
+
+# Screenshots das telas (ficam locais; o PDF do moodboard ja as contem)
+assets/screenshots/

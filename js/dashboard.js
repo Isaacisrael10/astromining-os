@@ -35,6 +35,8 @@
   var callout = document.querySelector(".decision-callout");
   var listaAlertas = document.querySelector(".alert-list");
   var botaoPerfurar = document.getElementById("startMiningButton");
+  var statusCmd = document.getElementById("command-status");
+  function setStatus(txt) { if (statusCmd) statusCmd.textContent = txt; }
 
   // ---------- Helpers de DOM ----------
   function setMetric(card, valor, unidade) {
@@ -153,12 +155,13 @@
     estado.energia = Math.max(0, estado.energia - (0.5 + Math.random() * 0.6));
     estado.broca = Math.min(100, Math.max(60, estado.broca + (Math.random() * 6 - 2)));
     render();
-    if (estado.cargaKg >= CARGA_MAX) { pararPerfuracao(); AstroUI.showToast("✅ Carga máxima atingida. Perfuração encerrada.", "success"); }
-    else if (estado.combustivel <= 5) { pararPerfuracao(); AstroUI.showToast("⛔ Combustível esgotado! Retornar a sonda.", "danger"); }
+    if (estado.cargaKg >= CARGA_MAX) { pararPerfuracao(); setStatus("Carga máxima atingida — perfuração concluída"); AstroUI.showToast("✅ Carga máxima atingida. Perfuração encerrada.", "success"); }
+    else if (estado.combustivel <= 5) { pararPerfuracao(); setStatus("Combustível esgotado — retornar a sonda"); AstroUI.showToast("⛔ Combustível esgotado! Retornar a sonda.", "danger"); }
   }
   function iniciarPerfuracao() {
     estado.perfurando = true;
     botaoPerfurar.textContent = "Pausar Perfuração";
+    setStatus("Perfuração em andamento — teleoperação ativa");
     AstroUI.showToast("🛠️ Perfuração iniciada no Setor A-7.", "success");
     intervaloPerfuracao = setInterval(passoPerfuracao, 1000);
     render();
@@ -166,6 +169,7 @@
   function pararPerfuracao() {
     estado.perfurando = false;
     botaoPerfurar.textContent = "Iniciar Perfuração";
+    setStatus("Sistema pronto — aguardando comando de perfuração");
     if (intervaloPerfuracao) { clearInterval(intervaloPerfuracao); intervaloPerfuracao = null; }
     render();
   }

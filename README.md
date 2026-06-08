@@ -38,8 +38,8 @@ pouco intuitiva** — o que é inaceitável para uma interface de missão, onde 
 igual a invisível*. A direção foi então refeita em uma linha mais **clean**, priorizando a
 leitura rápida sem perder o clima de cockpit.
 
-Resumo das decisões (detalhamento completo e análise crítica em
-[`assets/moodboard.md`](assets/moodboard.md)):
+Resumo das decisões (moodboard completo, com análise crítica e anatomia das telas, em
+[`assets/AstroMining-Moodboard.pdf`](assets/AstroMining-Moodboard.pdf)):
 
 - **Paleta escura** (quase preto) — remete ao espaço e reduz a fadiga visual em
   monitoramento prolongado, dando contraste máximo aos dados.
@@ -124,11 +124,10 @@ Por ser um site estático (apenas HTML e CSS), **não requer instalação**:
 ├── sistemas.html
 ├── css/
 │   └── style.css       # tokens + componentes reutilizáveis
-└── assets/             # moodboard, direção de design e screenshots
-    ├── moodboard.md
-    ├── direcao-de-design.html
-    ├── AstroMining-Direcao-de-Design.pdf
-    └── screenshots/
+└── assets/                       # moodboard e referências visuais
+    ├── AstroMining-Moodboard.pdf  # moodboard (direção visual + anatomia das telas)
+    ├── moodboard.html             # fonte do moodboard
+    └── screenshots/               # capturas das telas
 ```
 
 ---

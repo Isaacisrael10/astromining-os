@@ -134,6 +134,120 @@
     });
   });
 
+  // ---------- Lê os minérios da tabela ----------
+  function lerMinerios() {
+    var arr = [];
+    corpo.querySelectorAll("tr").forEach(function (tr) {
+      arr.push({
+        nome: tr.cells[0].textContent.trim(),
+        massa: numero(tr.cells[1].textContent),
+        pureza: numero(tr.cells[2].textContent),
+        aplicacao: tr.cells[3] ? tr.cells[3].textContent.trim() : "—",
+        valor: tr.cells[COL_VALOR].textContent.trim()
+      });
+    });
+    return arr;
+  }
+
+  // ---------- Drawer: "Ver carga" (massa por minério) ----------
+  function abrirCarga() {
+    if (typeof Chart === "undefined") return;
+    var dados = lerMinerios();
+    AstroDrawer.open({
+      titulo: "Carga coletada",
+      conteudo: function (c) {
+        var cv = AstroCharts.canvas(c);
+        var ch = new Chart(cv, {
+          type: "bar",
+          data: { labels: dados.map(function (d) { return d.nome; }),
+            datasets: [{ label: "Massa (kg)", borderWidth: 0, backgroundColor: CORES.cyan,
+              data: dados.map(function (d) { return d.massa; }) }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false }, title: { display: true, text: "Massa coletada por minério (kg)" } } }
+        });
+        var total = dados.reduce(function (s, d) { return s + d.massa; }, 0);
+        var ul = document.createElement("ul"); ul.className = "kv-list";
+        ul.innerHTML =
+          "<li><span>Total coletado</span><strong>" + total.toLocaleString("pt-BR") + " kg</strong></li>" +
+          "<li><span>Capacidade</span><strong>5.000 kg</strong></li>" +
+          "<li><span>Ocupação</span><strong>" + Math.round(total / 5000 * 100) + "%</strong></li>";
+        c.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
+  // ---------- Drawer: "Ver platina" (mineral mais valioso) ----------
+  function abrirPlatina() {
+    if (typeof Chart === "undefined") return;
+    var pt = null;
+    lerMinerios().forEach(function (d) { if (d.nome.toLowerCase().indexOf("platina") === 0) pt = d; });
+    if (!pt) return;
+    AstroDrawer.open({
+      titulo: "Minério: " + pt.nome,
+      conteudo: function (c) {
+        var cv = AstroCharts.canvas(c);
+        var ch = new Chart(cv, {
+          type: "doughnut",
+          data: { labels: ["Pureza", "Impureza"],
+            datasets: [{ data: [pt.pureza, 100 - pt.pureza], borderWidth: 0,
+              backgroundColor: [CORES.gold, "rgba(215,251,255,0.08)"] }] },
+          options: { responsive: true, maintainAspectRatio: false, cutout: "68%",
+            plugins: { legend: { position: "bottom" } } }
+        });
+        var ul = document.createElement("ul"); ul.className = "kv-list";
+        ul.innerHTML =
+          "<li><span>Massa</span><strong>" + pt.massa.toLocaleString("pt-BR") + " kg</strong></li>" +
+          "<li><span>Pureza</span><strong>" + pt.pureza + "%</strong></li>" +
+          "<li><span>Valor</span><strong>" + pt.valor + "</strong></li>" +
+          "<li><span>Aplicação</span><strong>" + pt.aplicacao + "</strong></li>";
+        c.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
+  // ---------- Drawer: "Ver pureza" (pureza por minério) ----------
+  function abrirPureza() {
+    if (typeof Chart === "undefined") return;
+    var dados = lerMinerios();
+    AstroDrawer.open({
+      titulo: "Pureza dos minérios",
+      conteudo: function (c) {
+        var cv = AstroCharts.canvas(c);
+        var ch = new Chart(cv, {
+          type: "bar",
+          data: { labels: dados.map(function (d) { return d.nome; }),
+            datasets: [{ label: "Pureza (%)", borderWidth: 0,
+              data: dados.map(function (d) { return d.pureza; }),
+              backgroundColor: dados.map(function (d) { return d.pureza >= 80 ? CORES.gold : d.pureza >= 70 ? CORES.cyan : "#9fb4bd"; }) }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } },
+            plugins: { legend: { display: false }, title: { display: true, text: "Pureza por minério (%)" } } }
+        });
+        var media = Math.round(dados.reduce(function (s, d) { return s + d.pureza; }, 0) / dados.length);
+        var ul = document.createElement("ul"); ul.className = "kv-list";
+        ul.innerHTML =
+          "<li><span>Pureza média</span><strong>" + media + "%</strong></li>" +
+          "<li><span>Meta de triagem</span><strong>acima de 80%</strong></li>";
+        c.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
+  // ---------- Botões dos cards de resumo (Ver carga / Ver platina / Ver pureza) ----------
+  var mainPanel = document.querySelector(".main-panel");
+  if (mainPanel) {
+    mainPanel.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-action]");
+      if (!b) return;
+      var acao = b.getAttribute("data-action");
+      if (acao === "view-total-cargo") abrirCarga();
+      else if (acao === "view-platinum") abrirPlatina();
+      else if (acao === "view-purity") abrirPureza();
+    });
+  }
+
   // ---------- Inicialização ----------
   montarGrafico();
 })();

@@ -14,10 +14,10 @@
   var CORES = (window.AstroCharts && AstroCharts.CORES) || {};
 
   var DADOS = {
-    "Psyche 16": { platina: 30, ferro: 42, niquel: 18, viabilidade: "Alta",     status: "Mineral Rico", classe: "attention" },
-    "Bennu":     { platina: 8,  ferro: 22, niquel: 9,  viabilidade: "Média",    status: "Científico",   classe: "neutral" },
-    "Ryugu":     { platina: 5,  ferro: 15, niquel: 6,  viabilidade: "Baixa",    status: "Limitado",     classe: "neutral" },
-    "Apophis":   { platina: 12, ferro: 28, niquel: 14, viabilidade: "Inviável", status: "Alto Risco",   classe: "danger" }
+    "Psyche 16": { platina: 30, ferro: 42, niquel: 18, viabilidade: "Alta",     status: "Mineral Rico", classe: "attention", distancia: 1500, risco: 50, riscoLabel: "Médio" },
+    "Bennu":     { platina: 8,  ferro: 22, niquel: 9,  viabilidade: "Média",    status: "Científico",   classe: "neutral",   distancia: 2100, risco: 25, riscoLabel: "Baixo" },
+    "Ryugu":     { platina: 5,  ferro: 15, niquel: 6,  viabilidade: "Baixa",    status: "Limitado",     classe: "neutral",   distancia: 2850, risco: 25, riscoLabel: "Baixo" },
+    "Apophis":   { platina: 12, ferro: 28, niquel: 14, viabilidade: "Inviável", status: "Alto Risco",   classe: "danger",    distancia: 3200, risco: 85, riscoLabel: "Alto" }
   };
 
   var painel = document.querySelector(".target-detail-panel");
@@ -93,5 +93,96 @@
     btn.textContent = "Ver composição (gráfico)";
     btn.addEventListener("click", abrirGrafico);
     painel.appendChild(btn);
+  }
+
+  // ---------- Drawer: análise de rota (distância dos alvos) ----------
+  function abrirRota() {
+    if (typeof Chart === "undefined") { AstroUI.showToast("Gráficos indisponíveis.", "warning"); return; }
+    var nomes = Object.keys(DADOS);
+    AstroDrawer.open({
+      titulo: "Análise de rota",
+      conteudo: function (corpo) {
+        var cv = AstroCharts.canvas(corpo);
+        var ch = new Chart(cv, {
+          type: "bar",
+          data: {
+            labels: nomes,
+            datasets: [{ label: "Distância (km)", borderWidth: 0,
+              data: nomes.map(function (n) { return DADOS[n].distancia; }),
+              backgroundColor: nomes.map(function (n) { return n === "Psyche 16" ? CORES.gold : CORES.cyan; }) }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false }, title: { display: true, text: "Distância dos alvos (km)" } }
+          }
+        });
+        var ul = document.createElement("ul");
+        ul.className = "kv-list";
+        ul.innerHTML =
+          "<li><span>Alvo principal</span><strong>Psyche 16</strong></li>" +
+          "<li><span>Distância</span><strong>1.500 km</strong></li>" +
+          "<li><span>Janela de comunicação</span><strong>Operável</strong></li>" +
+          "<li><span>Status da rota</span><strong>Dentro da teleoperação</strong></li>";
+        corpo.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
+  // ---------- Drawer: risco orbital (índice por alvo) ----------
+  function abrirRisco() {
+    if (typeof Chart === "undefined") { AstroUI.showToast("Gráficos indisponíveis.", "warning"); return; }
+    var nomes = Object.keys(DADOS);
+    function cor(v) { return v >= 70 ? CORES.red : v >= 45 ? CORES.gold : CORES.green; }
+    AstroDrawer.open({
+      titulo: "Risco orbital",
+      conteudo: function (corpo) {
+        var cv = AstroCharts.canvas(corpo);
+        var ch = new Chart(cv, {
+          type: "bar",
+          data: {
+            labels: nomes,
+            datasets: [{ label: "Risco", borderWidth: 0,
+              data: nomes.map(function (n) { return DADOS[n].risco; }),
+              backgroundColor: nomes.map(function (n) { return cor(DADOS[n].risco); }) }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, max: 100 } },
+            plugins: { legend: { display: false }, title: { display: true, text: "Índice de risco por alvo" } }
+          }
+        });
+        var ul = document.createElement("ul");
+        ul.className = "kv-list";
+        ul.innerHTML = nomes.map(function (n) {
+          return "<li><span>" + n + "</span><strong>" + DADOS[n].riscoLabel + "</strong></li>";
+        }).join("");
+        corpo.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
+  // ---------- Botões dos cards de resumo (Ver alvo / Analisar rota / Ver risco) ----------
+  var mainPanel = document.querySelector(".main-panel");
+  if (mainPanel) {
+    mainPanel.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-action]");
+      if (!b) return;
+      var acao = b.getAttribute("data-action");
+      if (acao === "target-psyche") {
+        var psyche = null;
+        grid.querySelectorAll(".target-card").forEach(function (c) {
+          if (c.querySelector("strong").textContent.trim() === "Psyche 16") psyche = c;
+        });
+        if (psyche) selecionar(psyche);
+        abrirGrafico();
+      } else if (acao === "distance-analysis") {
+        abrirRota();
+      } else if (acao === "risk-analysis") {
+        abrirRisco();
+      }
+    });
   }
 })();

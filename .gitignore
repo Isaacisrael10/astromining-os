@@ -23,3 +23,7 @@ assets/screenshots/
 
 # Fonte do moodboard (o PDF e a entrega final)
 assets/moodboard.html
+
+# Prints avulsos (ex.: circuito do Arduino) - nao fazem parte do site
+image.png
+Captura de tela*.png

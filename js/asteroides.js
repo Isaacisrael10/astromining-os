@@ -44,7 +44,6 @@
       specs[2].textContent = d.niquel + "%";
       specs[3].textContent = d.viabilidade;
     }
-    AstroUI.showToast("🛰️ Alvo selecionado: " + nome, "info");
   }
 
   // Abre o drawer com o gráfico de composição do alvo selecionado

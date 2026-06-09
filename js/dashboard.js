@@ -403,7 +403,6 @@
     document.addEventListener("mouseup", function (e) {
       if (arrastandoProbe) {
         arrastandoProbe = false; probe.classList.remove("dragging");
-        AstroUI.showToast("🛰️ Sonda reposicionada.", "info");
         return;
       }
       if (pan) {
@@ -487,13 +486,7 @@
     if (acao === "start-mining") { estado.perfurando ? pararPerfuracao() : iniciarPerfuracao(); return; }
     if (KPIKEY[acao]) { abrirKpi(KPIKEY[acao]); return; }
     if (MINERIOS[acao]) { abrirMineral(acao); return; }
-
-    // demais botões: comando com atraso de comunicação
-    var alvo = botao.querySelector("strong") || botao;
-    var rotulo = alvo.textContent.trim();
-    AstroUI.comDelay("Comando enviado: " + rotulo, function () {
-      AstroUI.showToast("✅ Resposta recebida: " + rotulo, "success");
-    });
+    // Botões de estatística/atalho (Missão, Distância, Sinal, etc.) não disparam notificação.
   });
 
   // ---------- Inicialização ----------

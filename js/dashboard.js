@@ -268,6 +268,41 @@
     });
   }
 
+  // ---------- Drawer: detalhe do minério da tabela de triagem ----------
+  function abrirDetalheMineral(botao) {
+    if (typeof Chart === "undefined") return;
+    var linha = botao.closest("tr");
+    if (!linha) return;
+    var nome = linha.cells[0].textContent.trim();
+    var massa = linha.cells[1].textContent.trim();
+    var pureza = parseFloat(linha.cells[2].textContent) || 0;
+    var valor = linha.cells[3].textContent.trim();
+    AstroDrawer.open({
+      titulo: "Minério: " + nome,
+      conteudo: function (corpo) {
+        var cv = AstroCharts.canvas(corpo);
+        var ch = new Chart(cv, {
+          type: "doughnut",
+          data: {
+            labels: ["Pureza", "Impureza"],
+            datasets: [{ data: [pureza, 100 - pureza], borderWidth: 0,
+              backgroundColor: [CORES.gold, "rgba(215,251,255,0.08)"] }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, cutout: "68%",
+            plugins: { legend: { position: "bottom" } } }
+        });
+        var ul = document.createElement("ul");
+        ul.className = "kv-list";
+        ul.innerHTML =
+          "<li><span>Massa</span><strong>" + massa + "</strong></li>" +
+          "<li><span>Pureza</span><strong>" + pureza + "%</strong></li>" +
+          "<li><span>Valor</span><strong>" + valor + "</strong></li>";
+        corpo.appendChild(ul);
+        return function () { ch.destroy(); };
+      }
+    });
+  }
+
   // ---------- Mapa: botão "Escanear setor" (injetado) ----------
   function injetarEscanear() {
     var heading = document.querySelector(".tactical-map .panel-heading");
@@ -486,6 +521,7 @@
     if (acao === "start-mining") { estado.perfurando ? pararPerfuracao() : iniciarPerfuracao(); return; }
     if (KPIKEY[acao]) { abrirKpi(KPIKEY[acao]); return; }
     if (MINERIOS[acao]) { abrirMineral(acao); return; }
+    if (acao.indexOf("mineral-") === 0) { abrirDetalheMineral(botao); return; }
     // Botões de estatística/atalho (Missão, Distância, Sinal, etc.) não disparam notificação.
   });
 

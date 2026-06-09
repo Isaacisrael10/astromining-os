@@ -370,6 +370,9 @@
 /* ============================================================
    Briefing da missão (Psyche) + créditos NASA
    ============================================================ */
+/* mesmo padding interno dos demais painéis do site */
+.mission-briefing { padding: var(--space-lg); }
+
 .briefing-grid {
     display: grid;
     grid-template-columns: 1fr 1.05fr;
